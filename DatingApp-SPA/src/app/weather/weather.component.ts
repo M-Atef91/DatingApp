@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { error } from 'util';
+
 
 @Component({
   selector: 'app-weather',
@@ -15,6 +15,7 @@ export class WeatherComponent implements OnInit {
     this.GetWeather();
   }
   GetWeather() {
+    
     this.http.get('http://localhost:5000/WeatherForecast').subscribe(response => {
       this.weather = response;
     }, error => { 
