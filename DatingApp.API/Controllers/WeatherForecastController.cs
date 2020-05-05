@@ -27,7 +27,7 @@ namespace DatingApp.API.Controllers
             _context=context;
             _logger = logger;
         }
-        [Authorize]
+        
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()

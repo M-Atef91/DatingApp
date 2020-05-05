@@ -8,21 +8,27 @@ import { WeatherComponent } from './weather/weather.component';
 import { from } from 'rxjs';
 import { NavComponent } from './Nav/Nav.component';
 import { AuthServiceService } from './_Services/AuthService.service';
+import { HomeComponent } from './Home/Home.component';
+import { RegisterComponent } from './Register/Register.component';
+import { errorInterceptorProvider} from './_Services/error.interceptor'
 
 @NgModule({
    declarations: [
       AppComponent,
       WeatherComponent,
-      NavComponent
+      NavComponent,
+      HomeComponent,
+      RegisterComponent
    ],
    imports: [
       BrowserModule,
       AppRoutingModule,
       HttpClientModule,
-      FormsModule,
+      FormsModule
    ],
    providers: [
-      AuthServiceService
+      AuthServiceService,
+      errorInterceptorProvider
    ],
    bootstrap: [
       AppComponent
