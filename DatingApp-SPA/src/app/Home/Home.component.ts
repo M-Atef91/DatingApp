@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   }
   GetWeather() {
     
-    this.http.get('https://localhost:44341/WeatherForecast').subscribe(response => {
+    this.http.get('https://localhost:5001/WeatherForecast').subscribe(response => {
       this.weather = response;
       console.log(this.weather)
     }, error => { 
