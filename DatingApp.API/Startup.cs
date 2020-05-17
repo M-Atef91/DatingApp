@@ -21,6 +21,8 @@ using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using DatingApp.API.Helpers;
+using Newtonsoft.Json;
+using AutoMapper;
 
 namespace DatingApp.API
 {
@@ -37,32 +39,16 @@ namespace DatingApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
             services.AddCors();
-            services.AddScoped<IAuthService,AuthService>();
-
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(x =>
-            //{
-            //    x.RequireHttpsMetadata = false;
-            //    x.SaveToken = true;
-            //    x.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuerSigningKey = true,
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
-            //            .GetBytes(Configuration.GetSection("AppSetting:Token").Value)),
-            //        ValidateIssuer = false,
-            //        ValidateAudience = false
-            //    };
-            //});
-
-
-
-
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IDatingAppService, DatingAppService>();
+            services.AddTransient<Seeds>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(option =>
                 {
@@ -78,7 +64,7 @@ namespace DatingApp.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Seeds seeder)
         {
             if (env.IsDevelopment())
             {
@@ -88,29 +74,32 @@ namespace DatingApp.API
             {
                 app.UseExceptionHandler(builder =>
                 {
-                    builder.Run(async context => {
+                    builder.Run(async context =>
+                    {
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         var error = context.Features.Get<IExceptionHandlerFeature>();
-                        if (error!=null)
+                        if (error != null)
                         {
                             context.Response.AddApplicationError(error.Error.Message);
                             await context.Response.WriteAsync(error.Error.Message);
                         }
-                    
+
                     });
                 }
-                
-                
+
+
                 );
             }
+            //seeder.CreateUserSeed();
+
+
             app.UseCors(X => X.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            app.UseAuthorization();
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
+
+
 
             app.UseEndpoints(endpoints =>
             {
