@@ -43,7 +43,7 @@ namespace DatingApp.API
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
-
+            services.AddHttpContextAccessor();
             services.AddCors();
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IAuthService, AuthService>();

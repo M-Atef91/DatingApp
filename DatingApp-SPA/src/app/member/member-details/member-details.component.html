@@ -1,0 +1,63 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <img src="{{user.photoUrl}}" alt="{{user.knownAs}}" class="card-img-top img-thumbnail">
+                <div class="card-body">
+                    <div>
+                        <h5 class="card-title">Location:</h5>
+                        <p class="card-text">{{user.city}},{{user.country}}</p>
+                    </div>
+                    <div>
+                        <h5 class="card-title">Age:</h5>
+                        <p class="card-text">{{user.age}}</p>
+                    </div>
+                    <div>
+                        <h5 class="card-title">Last Active:</h5>
+                        <p class="card-text">{{user.lastActive}}</p>
+                    </div>
+                    <div>
+                        <h5 class="card-title">Member since:</h5>
+                        <p class="card-text">{{user.created}}</p>
+                    </div>
+                    <div class="mt-4">
+                        <div class="btn-group d-flex">
+                            <button class="btn btn-primary w-100 mr-2">Like</button>
+                            <button class="btn btn-success w-100">Message</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            
+           
+            <div class="tab-panel">
+                
+                <tabset class="member-tabset">
+                    <tab heading='About {{user.knownAs}}'>
+                        <h4>Description</h4>
+                        <p>{{user.introduction}}</p>
+                        <h4>Looking For</h4>
+                        <p>{{user.lookingFor}}</p>
+                    </tab>
+                    <tab heading="Interests">
+                        <h4>Interrests</h4>
+                        <p>{{user.interests}}</p>
+                    </tab>
+                    <tab heading="Gallery">
+                        <div *ngFor="let item of user.photos">
+                            <img src="{{item.url}}" alt="">
+                        </div>
+                    </tab>
+                    <tab heading="Message">
+                        <p>message will go here</p>
+                    </tab>
+                </tabset>
+            </div>
+
+        </div>
+    </div>
+</div>

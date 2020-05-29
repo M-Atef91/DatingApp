@@ -7,10 +7,11 @@ using DatingApp.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DatingApp.API.DTOs;
+using System.Security.Claims;
 
 namespace DatingApp.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -27,8 +28,9 @@ namespace DatingApp.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
+            int use =int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var users = await _datingAppService.GetAllUsers();
-            var usersDisplay = _mapper.Map<ICollection<UserForListDto>>(users);
+            var usersDisplay = _mapper.Map<ICollection<UserForListDto>>( users.Where(u=>u.Id != use));
             return Ok(usersDisplay);
         }
         
