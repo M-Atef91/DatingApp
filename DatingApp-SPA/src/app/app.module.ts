@@ -27,6 +27,9 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { MemberDetailsComponent } from './member/member-details/member-details.component';
 import { MemberDetailsResolver } from './_Resolvers/member-details.resolver';
 import { MemberListResolver } from './_Resolvers/member-list.resolver';
+import { MemberUserEditComponent } from './member/member-user-edit/member-user-edit.component';
+import { MemberEditResolver } from './_Resolvers/member-edit.resolver';
+import { DeactiveGuard } from './_Guards/deactive.guard';
 
 export function tokenGetter(){
 return localStorage.getItem('token');
@@ -42,7 +45,8 @@ return localStorage.getItem('token');
       MemberListComponent,
       MessagesComponent,
       MemberCardComponent,
-      MemberDetailsComponent
+      MemberDetailsComponent,
+      MemberUserEditComponent,
    ],
    imports: [
       BrowserModule,
@@ -67,9 +71,12 @@ return localStorage.getItem('token');
       AlertifyService,
       AuthGuard,
       UnauthGuard,
+      DeactiveGuard,
       UsersService,
       MemberDetailsResolver,
       MemberListResolver,
+      MemberEditResolver,
+      
    ],
    bootstrap: [
       AppComponent

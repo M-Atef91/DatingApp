@@ -8,6 +8,9 @@ import { UnauthGuard } from "./_Guards/unauth.guard";
 import { MemberDetailsComponent } from "./member/member-details/member-details.component";
 import { MemberDetailsResolver } from "./_Resolvers/member-details.resolver";
 import { MemberListResolver } from "./_Resolvers/member-list.resolver";
+import { MemberUserEditComponent } from './member/member-user-edit/member-user-edit.component';
+import { MemberEditResolver } from './_Resolvers/member-edit.resolver';
+import { DeactiveGuard } from './_Guards/deactive.guard';
 
 export const appRoutes: Routes = [
   { path: "", component: HomeComponent, canActivate: [UnauthGuard] },
@@ -30,6 +33,15 @@ export const appRoutes: Routes = [
         resolve: {
           user: MemberDetailsResolver,
         },
+      },
+      {
+        path:"member/edit",
+        component:MemberUserEditComponent,
+        resolve:{
+          user:MemberEditResolver,
+        },
+        canDeactivate:[DeactiveGuard]
+
       },
       { path: "messages", component: MessagesComponent },
     ],
