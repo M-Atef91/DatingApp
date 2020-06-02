@@ -22,4 +22,7 @@ export class UsersService {
   getUser(id){
     return this.http.get<User>(this.baseUrl+'getuser/'+id);
   }
+  UpdateUser(id,user:User){
+    return this.http.put<User>(this.baseUrl+'UpdateUser/'+id,user);
+  }
 }
